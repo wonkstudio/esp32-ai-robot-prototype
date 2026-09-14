@@ -1,0 +1,88 @@
+<mujoco model="deskro_v1_training">
+  <compiler angle="degree" autolimits="true"/>
+  <option timestep="0.005" gravity="0 0 -9.81" integrator="implicitfast"/>
+
+  <default>
+    <joint damping="0.18" armature="0.003" frictionloss="0.003"/>
+    <geom density="550" friction="0.8 0.1 0.1"/>
+  </default>
+
+  <worldbody>
+    <geom name="floor" type="plane" size="2 2 0.05"
+          rgba="0.95 0.96 0.98 1"/>
+
+    <body name="target_marker" mocap="true" pos="0 -0.35 0.20">
+      <geom name="target_geom" type="sphere" size="0.018"
+            rgba="1 0.42 0.20 0.92" contype="0" conaffinity="0"/>
+    </body>
+
+    <body name="base" pos="0 0 0.022">
+      <geom name="base_geom" type="box" size="0.062 0.043 0.022"
+            rgba="0.4 0.5 0.65 1"/>
+
+      <body name="torso" pos="0 0 0.070">
+        <geom name="torso_geom" type="box" size="0.058 0.038 0.055"
+              rgba="0.85 0.88 0.93 1"/>
+
+        <body name="neck_yaw" pos="0 0 0.056">
+          <joint name="joint_head_yaw" type="hinge"
+                 axis="0 0 1" range="-60 60"
+                 damping="0.12" armature="0.002" frictionloss="0.004"/>
+          <geom name="yaw_servo" type="cylinder" size="0.018 0.008"
+                rgba="0.4 0.55 0.75 1"
+                contype="0" conaffinity="0" mass="0.000001"/>
+
+          <body name="neck_pitch" pos="0 0 0.006">
+            <joint name="joint_head_pitch" type="hinge"
+                   axis="-1 0 0" range="-25 25"
+                   damping="0.16" armature="0.003" frictionloss="0.006"/>
+            <geom name="pitch_servo" type="cylinder" euler="0 90 0"
+                  size="0.016 0.008" rgba="0.4 0.55 0.75 1"
+                  contype="0" conaffinity="0" mass="0.000001"/>
+
+            <body name="head" pos="0 0 0.045" gravcomp="1">
+              <inertial pos="0 0 0" mass="0.090"
+                        diaginertia="0.0000723 0.0001316 0.0001030"/>
+              <geom name="head_shell" type="box" size="0.052 0.027 0.041"
+                    rgba="0.93 0.94 0.97 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+
+              <geom name="oled_panel" type="box"
+                    pos="0 -0.028 0" size="0.040 0.0015 0.027"
+                    rgba="0.01 0.02 0.04 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+              <geom name="left_eye" type="sphere"
+                    pos="-0.015 -0.030 0.006" size="0.004"
+                    rgba="0.2 0.8 1 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+              <geom name="right_eye" type="sphere"
+                    pos="0.015 -0.030 0.006" size="0.004"
+                    rgba="0.2 0.8 1 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position name="act_head_yaw" joint="joint_head_yaw"
+              kp="28"
+              ctrllimited="true"
+              ctrlrange="-1.0471975512 1.0471975512"
+              forcelimited="true" forcerange="-0.35 0.35"/>
+    <position name="act_head_pitch" joint="joint_head_pitch"
+              kp="32"
+              ctrllimited="true"
+              ctrlrange="-0.4363323130 0.4363323130"
+              forcelimited="true" forcerange="-0.35 0.35"/>
+  </actuator>
+
+  <sensor>
+    <jointpos name="head_yaw_pos" joint="joint_head_yaw"/>
+    <jointpos name="head_pitch_pos" joint="joint_head_pitch"/>
+    <jointvel name="head_yaw_vel" joint="joint_head_yaw"/>
+    <jointvel name="head_pitch_vel" joint="joint_head_pitch"/>
+  </sensor>
+</mujoco>

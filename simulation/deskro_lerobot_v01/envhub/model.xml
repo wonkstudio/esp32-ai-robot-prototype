@@ -1,0 +1,250 @@
+<mujoco model="deskro_v1_cute_square_tv_visible_neck">
+  <compiler angle="degree" autolimits="true" meshdir="assets"/>
+  <option timestep="0.005" gravity="0 0 -9.81" integrator="implicitfast"/>
+
+  <visual>
+    <global azimuth="145" elevation="-14"/>
+    <quality shadowsize="2048"/>
+    <headlight ambient="0.38 0.39 0.42"
+               diffuse="0.76 0.77 0.80"
+               specular="0.24 0.24 0.24"/>
+  </visual>
+
+  <default>
+    <joint damping="0.18" armature="0.003" frictionloss="0.003"/>
+    <geom density="550" friction="0.8 0.1 0.1"
+          contype="1" conaffinity="1"/>
+  </default>
+
+  <asset>
+    <mesh name="base_square_mesh" file="base_square.obj"/>
+    <mesh name="base_front_square_mesh" file="base_front_square.obj"/>
+    <mesh name="torso_square_mesh" file="torso_square.obj"/>
+    <mesh name="torso_panel_square_mesh" file="torso_panel_square.obj"/>
+    <mesh name="speaker_square_mesh" file="speaker_square.obj"/>
+    <mesh name="head_square_mesh" file="head_square.obj"/>
+    <mesh name="bezel_square_mesh" file="bezel_square.obj"/>
+    <mesh name="screen_square_mesh" file="screen_square.obj"/>
+  </asset>
+
+  <worldbody>
+    <light name="key" pos="1.2 -1.4 2.2" dir="-0.5 0.6 -1"
+           diffuse="0.90 0.89 0.88"/>
+    <light name="fill" pos="-1 0.5 1.5" dir="0.5 -0.2 -1"
+           diffuse="0.40 0.44 0.50"/>
+    <geom name="floor" type="plane" size="2 2 0.05"
+          rgba="0.95 0.96 0.98 1"/>
+
+    <!-- Orange sphere: virtual user / target direction. -->
+    <body name="target_marker" mocap="true" pos="0 -0.35 0.20">
+      <geom name="target_geom" type="sphere" size="0.018"
+            rgba="1 0.42 0.20 0.92"
+            contype="0" conaffinity="0"/>
+    </body>
+
+    <body name="base" pos="0 0 0.022">
+      <!-- Invisible collision/mass geometry. -->
+      <geom name="base_geom" type="box"
+            size="0.062 0.043 0.022"
+            rgba="0 0 0 0"/>
+
+      <!-- Stable rounded desk base. -->
+      <geom name="base_shell_visual" type="mesh"
+            mesh="base_square_mesh"
+            rgba="0.56 0.72 0.92 1"
+            contype="0" conaffinity="0" mass="0.000001"/>
+      <geom name="base_front_visual" type="mesh"
+            mesh="base_front_square_mesh"
+            pos="0 -0.037 -0.004"
+            rgba="0.44 0.62 0.86 1"
+            contype="0" conaffinity="0" mass="0.000001"/>
+
+      <body name="torso" pos="0 0 0.070">
+        <!-- Original simple physics shell retained. -->
+        <geom name="torso_geom" type="box"
+              size="0.058 0.038 0.055"
+              rgba="0 0 0 0"/>
+
+        <!-- Compact rounded retro body. -->
+        <geom name="torso_shell_visual" type="mesh"
+              mesh="torso_square_mesh"
+              pos="0 0 -0.004"
+              rgba="0.94 0.95 0.97 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+        <geom name="torso_front_panel_visual" type="mesh"
+              mesh="torso_panel_square_mesh"
+              pos="0 -0.043 -0.004"
+              rgba="0.83 0.89 0.97 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+
+        <!-- Side service panels, not fake arms. -->
+        <geom name="left_side_panel_visual" type="cylinder"
+              pos="-0.061 0 0.004" euler="0 90 0"
+              size="0.018 0.003"
+              rgba="0.52 0.69 0.92 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+        <geom name="right_side_panel_visual" type="cylinder"
+              pos="0.061 0 0.004" euler="0 90 0"
+              size="0.018 0.003"
+              rgba="0.52 0.69 0.92 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+
+        <!-- Front speaker. -->
+        <geom name="speaker_panel_visual" type="mesh"
+              mesh="speaker_square_mesh"
+              pos="0 -0.045 -0.017"
+              rgba="0.15 0.18 0.25 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+        <geom name="speaker_hole_1" type="sphere"
+              pos="-0.016 -0.047 -0.017" size="0.0020"
+              rgba="0.03 0.04 0.07 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+        <geom name="speaker_hole_2" type="sphere"
+              pos="-0.008 -0.047 -0.017" size="0.0020"
+              rgba="0.03 0.04 0.07 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+        <geom name="speaker_hole_3" type="sphere"
+              pos="0 -0.047 -0.017" size="0.0020"
+              rgba="0.03 0.04 0.07 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+        <geom name="speaker_hole_4" type="sphere"
+              pos="0.008 -0.047 -0.017" size="0.0020"
+              rgba="0.03 0.04 0.07 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+        <geom name="speaker_hole_5" type="sphere"
+              pos="0.016 -0.047 -0.017" size="0.0020"
+              rgba="0.03 0.04 0.07 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+        <geom name="status_light_visual" type="capsule"
+              fromto="-0.010 -0.046 -0.039 0.010 -0.046 -0.039"
+              size="0.0020"
+              rgba="0.20 0.78 1.00 1"
+              contype="0" conaffinity="0" mass="0.000001"/>
+
+        <!--
+          The two neck joints are nearly stacked inside the body/head shells.
+          This keeps full 2-DOF motion while making the visible neck very short.
+        -->
+        <body name="neck_yaw" pos="0 0 0.056">
+          <joint name="joint_head_yaw" type="hinge"
+                 axis="0 0 1" range="-60 60"
+                 damping="0.12" armature="0.002" frictionloss="0.004"/>
+          <geom name="yaw_servo" type="cylinder"
+                size="0.018 0.008" rgba="0 0 0 0"
+                contype="0" conaffinity="0" mass="0.000001"/>
+          <geom name="short_neck_collar_visual" type="cylinder"
+                size="0.021 0.012"
+                rgba="0.46 0.61 0.82 1"
+                contype="0" conaffinity="0" mass="0.000001"/>
+          <geom name="neck_top_trim_visual" type="cylinder"
+                pos="0 0 0.010"
+                size="0.024 0.003"
+                rgba="0.63 0.77 0.95 1"
+                contype="0" conaffinity="0" mass="0.000001"/>
+
+          <body name="neck_pitch" pos="0 0 0.006">
+            <!-- DESKRO faces -Y. Positive pitch = look up. -->
+            <joint name="joint_head_pitch" type="hinge"
+                   axis="-1 0 0" range="-25 25"
+                   damping="0.16" armature="0.003" frictionloss="0.006"/>
+            <geom name="pitch_servo" type="cylinder"
+                  euler="0 90 0" size="0.016 0.008"
+                  rgba="0 0 0 0" contype="0" conaffinity="0"
+                  mass="0.000001"/>
+
+            <body name="head" pos="0 0 0.045" gravcomp="1">
+              <!-- Explicit 90 g head inertia. The SG90 is modeled as a
+                   position servo, so gravcomp prevents passive head drop. -->
+              <inertial pos="0 0 0" mass="0.090"
+                        diaginertia="0.0000723 0.0001316 0.0001030"/>
+              <!-- Invisible non-colliding head shape. -->
+              <geom name="head_shell" type="box"
+                    size="0.052 0.027 0.041"
+                    rgba="0 0 0 0"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+
+              <!-- Rounded retro CRT television shell. -->
+              <geom name="retro_head_shell_visual" type="mesh"
+                    mesh="head_square_mesh"
+                    rgba="0.95 0.96 0.98 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+
+              <!-- Pastel blue screen bezel. -->
+              <geom name="screen_bezel_visual" type="mesh"
+                    mesh="bezel_square_mesh"
+                    pos="0 -0.0360 0"
+                    rgba="0.52 0.70 0.94 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+
+              <!-- Dark CRT screen. -->
+              <geom name="oled_panel" type="mesh"
+                    mesh="screen_square_mesh"
+                    pos="0 -0.0390 0"
+                    rgba="0.012 0.018 0.032 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+
+              <!-- Expression geoms expected by deskro_env.py. -->
+              <geom name="left_eye" type="ellipsoid"
+                    pos="-0.017 -0.0413 0.007"
+                    size="0.0090 0.0013 0.0050"
+                    rgba="0.20 0.80 1.00 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+              <geom name="right_eye" type="ellipsoid"
+                    pos="0.017 -0.0413 0.007"
+                    size="0.0090 0.0013 0.0050"
+                    rgba="0.20 0.80 1.00 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+              <geom name="mouth_visual" type="capsule"
+                    fromto="-0.006 -0.0416 -0.010 0.006 -0.0416 -0.010"
+                    size="0.0015"
+                    rgba="0.28 0.85 1.00 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+
+              <!-- Retro side dials. -->
+              <geom name="left_dial_visual" type="cylinder"
+                    pos="-0.061 0 0.001" euler="0 90 0"
+                    size="0.014 0.003"
+                    rgba="0.47 0.65 0.90 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+              <geom name="right_dial_visual" type="cylinder"
+                    pos="0.061 0 0.001" euler="0 90 0"
+                    size="0.014 0.003"
+                    rgba="0.47 0.65 0.90 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+
+              <!-- Tiny retro top indicator, kept low and simple. -->
+              <geom name="top_indicator_visual" type="box"
+                    pos="0 0 0.047"
+                    size="0.014 0.008 0.003"
+                    rgba="0.61 0.77 0.97 1"
+                    contype="0" conaffinity="0" mass="0.000001"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <!-- Moderately faster than the previous slow visual model, but still stable. -->
+    <position name="act_head_yaw" joint="joint_head_yaw"
+              kp="28"
+              ctrllimited="true"
+              ctrlrange="-1.0471975512 1.0471975512"
+              forcelimited="true"
+              forcerange="-0.35 0.35"/>
+    <position name="act_head_pitch" joint="joint_head_pitch"
+              kp="32"
+              ctrllimited="true"
+              ctrlrange="-0.4363323130 0.4363323130"
+              forcelimited="true"
+              forcerange="-0.35 0.35"/>
+  </actuator>
+
+  <sensor>
+    <jointpos name="head_yaw_pos" joint="joint_head_yaw"/>
+    <jointpos name="head_pitch_pos" joint="joint_head_pitch"/>
+    <jointvel name="head_yaw_vel" joint="joint_head_yaw"/>
+    <jointvel name="head_pitch_vel" joint="joint_head_pitch"/>
+  </sensor>
+</mujoco>

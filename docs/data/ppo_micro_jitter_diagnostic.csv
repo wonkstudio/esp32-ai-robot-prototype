@@ -1,0 +1,9 @@
+metric,value
+yaw_policy_target_p2p_deg,120.0
+yaw_servo_command_p2p_deg,3.119
+yaw_joint_p2p_deg,3.145
+yaw_mean_abs_speed_deg_s,8.455
+pitch_policy_target_p2p_deg,40.495
+pitch_servo_command_p2p_deg,1.207
+pitch_joint_p2p_deg,1.258
+pitch_mean_abs_speed_deg_s,2.964
